@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123b35">
+  <title>Ambulancetjenesten – Prisliste</title>
+  <style>
+    :root{color-scheme:light;--bg:#edf2ef;--panel:#fff;--ink:#172521;--muted:#60716b;--line:#d5e0da;--green:#123b35;--green2:#1d5b50;--accent:#d9aa36;--soft:#f4f8f5;--red:#a52a2a;--shadow:0 12px 32px #18352b0b}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,-apple-system,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}header{background:var(--green);color:white;border-bottom:4px solid var(--accent);padding:18px 24px}.header-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}h1{font-size:1.35rem;margin:0;font-weight:800}header p{margin:3px 0 0;color:#d9e7e1;font-size:.95rem}.userbar{display:flex;align-items:center;gap:12px;font-size:.9rem}.userbar button{border:1px solid #a9c1b6;background:transparent;color:#fff;border-radius:6px;padding:7px 12px}.wrap{max-width:1180px;margin:24px auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.85fr);gap:20px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}h2{font-size:1.13rem;margin:0 0 14px}h3{font-size:1rem;margin:18px 0 5px;color:var(--green2)}.lead{color:var(--muted);margin:-5px 0 16px}.fee-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.fee{background:var(--soft);border:1px solid var(--line);padding:12px;border-radius:8px}.fee strong{display:block;color:var(--green);font-size:1.08rem}.fee small{color:var(--muted)}.parts{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 14px}.part{display:contents}.part-name{border-bottom:1px solid var(--line);padding:8px 0}.part-price{font-weight:700;text-align:right;border-bottom:1px solid var(--line);padding:8px 0;white-space:nowrap}.qty{display:flex;align-items:center;gap:7px}.qty button{width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:6px;color:var(--green);font-weight:700}.qty span{min-width:18px;text-align:center}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:.88rem;font-weight:650;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;border:1px solid #bccbc3;border-radius:7px;padding:10px 11px;background:white;color:var(--ink)}.field textarea{min-height:84px;resize:vertical}.wide{grid-column:1/-1}.checkline{display:flex;align-items:center;gap:9px;margin:14px 0 0;font-weight:600}.checkline input{width:18px;height:18px;accent-color:var(--green)}.estimate{position:sticky;top:16px}.estimate-lines{list-style:none;padding:0;margin:0}.estimate-lines li,.sumrow{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--line)}.sumrow{border:0}.total{border-top:2px solid var(--green);margin-top:7px;padding-top:12px;font-weight:800;font-size:1.3rem}.muted{color:var(--muted);font-size:.9rem}.btn{width:100%;margin-top:14px;padding:12px 16px;border:0;border-radius:8px;background:var(--green);color:#fff;font-weight:750}.btn:hover{background:var(--green2)}.message{min-height:1.4em;margin:10px 0 0;color:var(--muted);font-size:.9rem}.error{color:var(--red)}.case-list{list-style:none;padding:0;margin:0}.case-list li{padding:12px 0;border-bottom:1px solid var(--line)}.case-list li:last-child{border-bottom:0}.case-list strong{display:block}.case-list small{display:block;color:var(--muted);margin-top:3px}.month-list{display:grid;grid-template-columns:1fr auto;gap:7px 12px}.month-list div{padding:5px 0;border-bottom:1px dashed var(--line)}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login .panel{width:min(440px,100%)}.login h1{color:var(--green);margin-bottom:8px}.login .field{margin:12px 0}.login .muted{margin:0 0 16px}.empty{color:var(--muted);padding:12px 0}[hidden]{display:none!important}:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+    @media(max-width:850px){.wrap{grid-template-columns:1fr}.estimate{position:static}}@media(max-width:540px){header{padding:16px}.wrap{padding:0 12px;margin:14px auto}.panel{padding:16px}.fee-grid,.form-grid{grid-template-columns:1fr}.wide{grid-column:auto}.userbar{width:100%;justify-content:space-between}}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <section id="login-view" class="login" hidden>
+    <div class="panel">
+      <h1>Ambulancetjenesten · Prisliste</h1>
+      <p class="muted">Log ind med samme medarbejderkonto som Benny’s Original Motor Works.</p>
+      <form id="login-form">
+        <div class="field"><label for="login-first">Fornavn</label><input id="login-first" autocomplete="given-name" required></div>
+        <div class="field"><label for="login-last">Efternavn</label><input id="login-last" autocomplete="family-name" required></div>
+        <div class="field"><label for="login-password">Kode</label><input id="login-password" type="password" autocomplete="current-password" required></div>
+        <button class="btn" type="submit">Log ind</button>
+      </form>
+      <p id="login-message" class="message" role="status"></p>
+    </div>
+  </section>
+
+  <div id="app" hidden>
+    <header><div class="header-inner"><div><h1>Ambulancetjenesten · Prisliste</h1><p>Benny’s Original Motor Works</p></div><div class="userbar"><span id="user-name"></span><button id="logout" type="button">Log ud</button></div></div></header>
+    <main class="wrap">
+      <div>
+        <section class="panel">
+          <h2>Faste gebyrer</h2>
+          <p class="lead">Gebyret beregnes pr. køretøj/besøg. Reparationsgebyr lægges kun til, når der udføres reparation.</p>
+          <div class="fee-grid">
+            <div class="fee"><strong>1.000 kr.</strong><small>Servicegebyr · almindeligt besøg pr. bil</small></div>
+            <div class="fee"><strong>3.000 kr.</strong><small>Reparationsgebyr · almindelig reparationssag</small></div>
+            <div class="fee"><strong>500 kr.</strong><small>Servicegebyr · planlagt servicedag pr. bil</small></div>
+            <div class="fee"><strong>2.750 kr.</strong><small>Reparationsgebyr · reparation ved planlagt servicedag</small></div>
+          </div>
+        </section>
+        <section class="panel">
+          <h2>Reservedelspriser</h2>
+          <p class="lead">Vælg reservedele for at beregne sagens samlede pris. Priser er i danske kroner.</p>
+          <div id="price-list"></div>
+        </section>
+        <section class="panel">
+          <h2>Registrér besøg og reparationssag</h2>
+          <p class="lead">Oplysningerne gemmes i Ambulancetjenestens database og indgår i månedens fakturagrundlag.</p>
+          <div class="form-grid">
+            <div class="field"><label for="received-at">Dato og tidspunkt for modtagelse</label><input id="received-at" type="datetime-local" required></div>
+            <div class="field"><label for="visit-type">Besøgstype</label><select id="visit-type"><option value="regular">Almindeligt besøg</option><option value="planned">Planlagt servicedag</option></select></div>
+            <div class="field"><label for="vehicle">Køretøjets mærke og model</label><input id="vehicle" placeholder="Fx mærke og model" required></div>
+            <div class="field"><label for="registration">Registreringsnummer</label><input id="registration" required></div>
+            <div class="field wide"><label for="delivered-by">Hvem afleverede køretøjet?</label><input id="delivered-by" required></div>
+            <div class="field wide"><label for="work-description">Arbejde / fejlfinding udført</label><textarea id="work-description" placeholder="Beskriv service, fejlfinding eller reparation"></textarea></div>
+          </div>
+          <label class="checkline"><input id="repairs-done" type="checkbox"> Der er udført reparation (tilføjer reparationsgebyr)</label>
+          <button id="save-case" class="btn" type="button">Gem sag</button>
+          <p id="app-message" class="message" role="status"></p>
+        </section>
+        <section class="panel">
+          <h2>Seneste sager</h2>
+          <ul id="case-list" class="case-list"></ul>
+        </section>
+      </div>
+      <aside>
+        <section class="panel estimate">
+          <h2>Prisoverslag</h2>
+          <ul id="estimate-lines" class="estimate-lines"></ul>
+          <div class="sumrow"><span>Servicegebyr</span><strong id="service-fee">0 kr.</strong></div>
+          <div class="sumrow"><span>Reparationsgebyr</span><strong id="repair-fee">0 kr.</strong></div>
+          <div class="sumrow"><span>Reservedele</span><strong id="parts-total">0 kr.</strong></div>
+          <div class="sumrow total"><span>Samlet pris</span><span id="grand-total">0 kr.</span></div>
+          <p class="muted">Der udstedes én samlet faktura pr. måned. Fakturadato er månedens sidste dag, og betalingsfristen er 15 dage.</p>
+        </section>
+        <section class="panel">
+          <h2>Månedligt fakturagrundlag</h2>
+          <p class="muted">Samlet beløb for registrerede sager pr. måned.</p>
+          <div id="month-list" class="month-list"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    'use strict';
+    const SUPABASE_URL='https://bejmzrxrxldfxxjqbkwm.supabase.co';
+    const SUPABASE_PUBLISHABLE_KEY='sb_publishable_FvI-4lN_WXozMQJ8CIjRGw_UbhTH61Z';
+    const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+    const PRICES=[
+      {name:'Kernedele',items:[['Alternator','core-alternator',6000],['Brakes','core-brakes',800],['Fuel Injector','core-fuel-injector',7500],['Power Steering Pump','core-power-steering-pump',9000],['Radiator','core-radiator',5000],['Transmission','core-transmission',16000]]},
+      {name:'Kernedele EV',items:[['EV Battery','ev-battery',18000],['Electric Motor','ev-electric-motor',12000],['Brakes','ev-brakes',800]]},
+      {name:'Servicedele',items:[['Air Filter','service-air-filter',500],['Brake Pads','service-brake-pads',1100],['Drive Belt','service-drive-belt',650],['Fuel Filter','service-fuel-filter',800],['High Voltage Wiring','service-high-voltage-wiring',1400],['Oil Filter','service-oil-filter',650],['Spark Plugs','service-spark-plugs',1200],['Tire','service-tire',520]]},
+      {name:'Væsker',items:[['Battery Coolant','fluid-battery-coolant',250],['Brake Fluid','fluid-brake-fluid',250],['Coolant','fluid-coolant',130],['Steering Fluid','fluid-steering-fluid',260],['Transmission Fluid','fluid-transmission-fluid',200]]},
+      {name:'Bildele',items:[['Vehicle Door','vehicle-door',650],['Vehicle Hood','vehicle-hood',1650],['Vehicle Trunk','vehicle-trunk',1300],['Vehicle Wheel','vehicle-wheel',260],['Vehicle Window','vehicle-window',325]]}
+    ];
+    const $=id=>document.getElementById(id), selected={}, money=n=>Math.round(Number(n)||0).toLocaleString('da-DK')+' kr.';
+    let user=null, employee='';
+    function escapeEmailPart(s){return s.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'.').replace(/^\.|\.$/g,'')}
+    function authEmail(first,last){return `${escapeEmailPart(first)}.${escapeEmailPart(last)}@login.autoexotic.dk`}
+    function localDateTime(){const d=new Date(),p=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`}
+    function showLogin(message=''){$('login-view').hidden=false;$('app').hidden=true;$('login-message').textContent=message;$('login-message').classList.toggle('error',!!message)}
+    function renderPrices(){const root=$('price-list');root.replaceChildren();PRICES.forEach(group=>{const h=document.createElement('h3');h.textContent=group.name;root.appendChild(h);const list=document.createElement('div');list.className='parts';group.items.forEach(([name,id,price])=>{const label=document.createElement('div');label.className='part-name';label.textContent=name;const controls=document.createElement('div');controls.className='part-price';const qty=document.createElement('span');qty.className='qty';const n=selected[id]||0;const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.setAttribute('aria-label','Fjern '+name);minus.disabled=!n;minus.onclick=()=>{if(selected[id]>1)selected[id]--;else delete selected[id];renderPrices();renderEstimate()};const number=document.createElement('span');number.textContent=n;const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.setAttribute('aria-label','Tilføj '+name);plus.onclick=()=>{selected[id]=(selected[id]||0)+1;renderPrices();renderEstimate()};const priceLabel=document.createElement('span');priceLabel.textContent=money(price);qty.append(minus,number,plus);controls.append(qty,priceLabel);list.append(label,controls)});root.appendChild(list)})}
+    function fees(){const planned=$('visit-type').value==='planned';return{service:planned?500:1000,repair:$('repairs-done').checked?(planned?2750:3000):0}}
+    function renderEstimate(){const lines=$('estimate-lines');lines.replaceChildren();let parts=0;PRICES.forEach(g=>g.items.forEach(([name,id,price])=>{const qty=selected[id]||0;if(!qty)return;parts+=qty*price;const li=document.createElement('li'),label=document.createElement('span'),amount=document.createElement('strong');label.textContent=name+(qty>1?' × '+qty:'');amount.textContent=money(price*qty);li.append(label,amount);lines.appendChild(li)}));const f=fees();$('service-fee').textContent=money(f.service);$('repair-fee').textContent=money(f.repair);$('parts-total').textContent=money(parts);$('grand-total').textContent=money(parts+f.service+f.repair);if(!lines.childElementCount){const li=document.createElement('li');li.className='muted';li.textContent='Ingen reservedele valgt.';lines.appendChild(li)}}
+    function formatDate(s){if(!s)return'';return new Date(s).toLocaleString('da-DK')}
+    async function loadCases(){if(!user)return;const{data,error}=await db.from('ambulance_cases').select('id,received_at,vehicle,registration,visit_type,repairs_done,total,delivered_by').order('received_at',{ascending:false}).limit(50);const list=$('case-list');list.replaceChildren();if(error){const li=document.createElement('li');li.className='empty';li.textContent='Kunne ikke hente sager. Kontrollér, at supabase-ambulance-setup.sql er kørt.';list.appendChild(li);return}if(!data?.length){const li=document.createElement('li');li.className='empty';li.textContent='Der er endnu ikke gemt nogen sager.';list.appendChild(li)}else data.forEach(c=>{const li=document.createElement('li'),title=document.createElement('strong'),meta=document.createElement('small');title.textContent=`${c.vehicle} · ${c.registration}`;meta.textContent=`${formatDate(c.received_at)} · ${c.visit_type==='planned'?'Planlagt servicedag':'Almindeligt besøg'}${c.repairs_done?' · Reparation':''} · Afleveret af ${c.delivered_by} · ${money(c.total)}`;li.append(title,meta);list.appendChild(li)})}
+    async function loadMonthSummary(){if(!user)return;const box=$('month-list');box.replaceChildren();const{data,error}=await db.from('ambulance_monthly_invoice_summary').select('month_start,case_count,total,invoice_date,due_date').order('month_start',{ascending:false}).limit(24);if(error){const msg=document.createElement('div');msg.className='muted';msg.textContent='Månedligt fakturagrundlag vises, når opsætnings-SQL er kørt.';box.appendChild(msg);return}if(!data?.length){const msg=document.createElement('div');msg.className='muted';msg.textContent='Ingen sager endnu.';box.appendChild(msg);return}data.forEach(m=>{const month=document.createElement('div'),sum=document.createElement('div');const d=new Date(`${m.month_start}T00:00:00`);month.textContent=d.toLocaleDateString('da-DK',{month:'long',year:'numeric'})+` · ${m.case_count} sag${m.case_count===1?'':'er'}`;sum.textContent=money(m.total);month.title=`Fakturadato ${m.invoice_date} · Forfald ${m.due_date}`;box.append(month,sum)})}
+    async function showApp(){ $('login-view').hidden=true;$('app').hidden=false;$('user-name').textContent=employee; if(!$('received-at').value)$('received-at').value=localDateTime();await Promise.all([loadCases(),loadMonthSummary()]) }
+    $('login-form').addEventListener('submit',async e=>{e.preventDefault();const first=$('login-first').value.trim(),last=$('login-last').value.trim(),password=$('login-password').value;if(!escapeEmailPart(first)||!escapeEmailPart(last)){showLogin('Indtast et gyldigt fornavn og efternavn.');return}$('login-message').textContent='Logger ind…';const{data,error}=await db.auth.signInWithPassword({email:authEmail(first,last),password});if(error){showLogin('Login mislykkedes. Tjek navn og kode.');return}user=data.user;employee=first+' '+last;await showApp()});
+    $('logout').onclick=async()=>{await db.auth.signOut();user=null;employee='';showLogin()};
+    db.auth.getSession().then(async({data})=>{if(data.session){user=data.session.user;employee=user.user_metadata?.full_name||user.email?.split('@')[0]||'Bruger';await showApp()}else showLogin()});
+    db.auth.onAuthStateChange((_event,session)=>{if(!session){user=null;$('app').hidden=true;showLogin()}});
+    $('visit-type').onchange=renderEstimate;$('repairs-done').onchange=renderEstimate;
+    $('save-case').onclick=async()=>{if(!user)return;const message=$('app-message');message.classList.remove('error');const received=$('received-at').value,vehicle=$('vehicle').value.trim(),registration=$('registration').value.trim(),delivered=$('delivered-by').value.trim(),work=$('work-description').value.trim(),repairs=$('repairs-done').checked;if(!received||!vehicle||!registration||!delivered){message.textContent='Udfyld dato/tid, køretøj, registreringsnummer og hvem der afleverede bilen.';message.classList.add('error');return}if(repairs&&!work){message.textContent='Beskriv arbejdet eller reparationen, før sagen gemmes.';message.classList.add('error');return}const lines=Object.entries(selected).map(([id,qty])=>({id,qty}));const{data,error}=await db.rpc('save_ambulance_case',{p_received_at:new Date(received).toISOString(),p_vehicle:vehicle,p_registration:registration,p_delivered_by:delivered,p_visit_type:$('visit-type').value,p_repairs_done:repairs,p_work_description:work,p_lines:lines});if(error){message.textContent='Kunne ikke gemme sagen: '+error.message+' (kontrollér opsætningen i Supabase).';message.classList.add('error');return}message.textContent='Sagen er gemt i databasen. Samlet pris: '+money(data?.total);Object.keys(selected).forEach(id=>delete selected[id]);$('vehicle').value='';$('registration').value='';$('delivered-by').value='';$('work-description').value='';$('repairs-done').checked=false;$('received-at').value=localDateTime();renderPrices();renderEstimate();await Promise.all([loadCases(),loadMonthSummary()])};
+    renderPrices();renderEstimate();
+  </script>
+</body>
+</html>
