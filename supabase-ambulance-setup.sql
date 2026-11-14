@@ -96,7 +96,9 @@ create table if not exists public.ambulance_cases (
   total numeric(12,2) not null check (total >= 0)
 );
 create index if not exists ambulance_cases_received_at_idx on public.ambulance_cases (received_at desc);
-create index if not exists ambulance_cases_month_idx on public.ambulance_cases (date_trunc('month', received_at));
+-- date_trunc(text, timestamptz) is STABLE (timezone-dependent), not IMMUTABLE,
+-- so it cannot be used directly in an index expression. received_at index above
+-- also supports month range queries without introducing timezone-dependent index keys.
 alter table public.ambulance_cases enable row level security;
 grant select on public.ambulance_cases to authenticated;
 drop policy if exists "Signed-in users can read ambulance cases" on public.ambulance_cases;
